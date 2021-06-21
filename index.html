@@ -31,7 +31,51 @@
     <header class="text-center text-white bg-info font-weight-bold p-3">
       <h1>Your Weather Dashboard</h1>
     </header>
-    <button type="button" class="btn-primary">primary</button>
+    <!-- ------------------------------STRUCTURE: MAIN--------------------------------- -->
+    <main class="container-fluid">
+      <div class="row">
+        <!--------------------------- 1st Content: City Search -->
+        <div class="col-4 p-3 my-3 border">
+          <form class="p-2">
+            <h2>Search for a City</h2>
+            <input
+              type="text"
+              id="city"
+              class="form-control form-input"
+              placeholder="enter a city"
+            />
+            <button class="btn btn-primary btn-block my-3" type="submit">
+              Search
+            </button>
+          </form>
+          <!--------------------------------------------------------------- JAVA 1: searched city -->
+          <div>placeholder: searched cities</div>
+        </div>
+        <!---------------------------- 2nd Content: Weather Result -->
+        <div class="col-8 p-3 my-3 border">
+          <!-- CONTENT: SEARCHED WEATHER -->
+          <div class="row border selected-city" id="current-forecast">
+            <div class="col-12 bg-info p-3">
+              <!---------------------------------------------------------- JAVA 2: searched city -->
+              <h2 id="searchedCity">placeholder:searched city</h2>
+              <!-------------------------------------------------------- JAVA 3: current weather -->
+              <div id="currentWeatherContainer" class="list-group">
+                placeholder:current Weather
+              </div>
+            </div>
+          </div>
+          <!-- CONTENT: FIVE DAY WEATHER-->
+          <div class="row border bg-info p-3" id="fiveDayForecast">
+            <!--------------------------------------------------------- JAVA 4: five day weather -->
+            <h2 class="col-12" id="forecast">placeholder: forecast</h2>
+            <!----------------------------------------------- JAVA 5: five day weather container -->
+            <div class="d-flex" id="fiveDayContainer">
+              placeholder: fiveDayContainer
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
