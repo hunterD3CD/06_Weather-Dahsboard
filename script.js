@@ -68,6 +68,36 @@ var apiFunction = function (event) {
       cityName.append(currentIcon);
 
       // /////////////////////////////////////////////////////////////////PART 2: CURRENT WEATHER DATA
+      var currentWeather = document.querySelector("#currentWeatherContainer");
+      currentWeather.textContent = "";
+      // -----------------------------------------------------------------data: temperature
+      var currentTemperature = document.createElement("span");
+      currentTemperature.textContent =
+        "Temperature: " + response.main.temp + " °F";
+      currentWeather.append(currentTemperature);
+      // -----------------------------------------------------------------data: humidity
+      var currentHumidity = document.createElement("span");
+      currentHumidity.textContent = "Humidity: " + response.main.humidity + "%";
+      currentWeather.append(currentHumidity);
+      // -----------------------------------------------------------------data: wind
+      var currentWind = document.createElement("span");
+      currentWind.textContent = "Wind: " + response.wind.speed + "MPH";
+      currentWeather.append(currentWind);
+      // -----------------------------------------------------------------data: uv index (uvi API)
+      var lat = response.coord.lat;
+      var lon = response.coord.lon;
+      fetch(
+        `https://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${lat}&lon=${lon}`
+      )
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (uvi) {
+          console.log("uvi", uvi);
+          currentUvi = document.createElement("span");
+          currentUvi.textContent = "UV Index: " + uvi.value;
+          currentWeather.append(currentUvi);
+        });
     });
 };
 
