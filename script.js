@@ -1,47 +1,12 @@
 // ------------------------------------ESTABLISHING VARIABLES-----------------------------------
-// variable: city
-// var cities = [];
-// var cityInputE1 = $("#city");
-// // variable: function
-// var submit = function (event) {
-//   event.preventDefault();
-//   var city = cityInputEl.value.trim();
-//   if (city) {
-//     getCityWeather(city);
-//     get5Day(city);
-//     cities.unshift({ city });
-//     cityInputEl.value = "";
-//   } else {
-//     alert("Please enter a City");
-//   }
-//   saveSearch();
-//   pastSearch(city);
-// };
-
-// var saveSearch = function () {
-//   localStorage.setItem("cities", JSON.stringify(cities));
-// };
-// var getWeather = function (city) {
-//   var apiKey = "c8050763e934a3e49035af066c6fde69";
-//   fetch(
-//     `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`
-//   )
-//     .then(function (response) {
-//       return response.json();
-//     })
-//     .then(function (response) {
-//       console.log(response);
-//     });
-// };
-
 var cityName = document.querySelector("#searchedCity");
+var apiKey = "c8050763e934a3e49035af066c6fde69";
 
-// ------------------------------------------WEATHER API-------------------------------------
+// ------------------------------------------CURRENT WEATHER API-------------------------------------
 // When search button is clicked, read the city name and get the weather response
-var apiFunction = function (event) {
-  event.preventDefault();
+var apiCurrentWeather = function (event) {
+  // event.preventDefault();
   var city = document.querySelector("#city").value;
-  var apiKey = "c8050763e934a3e49035af066c6fde69";
   fetch(
     `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`
   )
@@ -49,7 +14,7 @@ var apiFunction = function (event) {
       return response.json();
     })
     .then(function (response) {
-      console.log(response);
+      console.log("currentweather", response);
       // When search button is clicked, the weather data is displayed
       // /////////////////////////////////////////////////////////////////PART 1: CITY NAME
       // -----------------------------------------------------------------data: cityName
@@ -101,7 +66,31 @@ var apiFunction = function (event) {
     });
 };
 
-document.getElementById("searchBtn").onclick = apiFunction;
+// ------------------------------------------FORECAST WEATHER API-------------------------------------
+// When search button is clicked, read the city name and get the weather response
+var apiForecastWeather = function (event) {
+  // event.preventDefault();
+  var city = document.querySelector("#city").value;
+  fetch(
+    `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${apiKey}`
+  )
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log("forecast", data);
+      // /////////////////////////////////////////////////////////////////PART 3: FORECAST WEATHER DATA
+      var forecastTitle = document.querySelector("#forecast");
+      forecastTitle.textContent = "";
+      forecastTitle.textContent = "5-Day Forecast";
+    });
+};
+
+document.getElementById("searchBtn").onclick = function (event) {
+  event.preventDefault();
+  apiCurrentWeather();
+  apiForecastWeather();
+};
 
 // When search button is clicked, city name is stored in the local storage
 // var saveSearch = function (event) {
