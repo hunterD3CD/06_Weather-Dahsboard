@@ -79,10 +79,48 @@ var apiForecastWeather = function (event) {
     })
     .then(function (data) {
       console.log("forecast", data);
-      // /////////////////////////////////////////////////////////////////PART 3: FORECAST WEATHER DATA
+      // /////////////////////////////////////////////////////////////////PART 3: FORECAST WEATHER TITLE
       var forecastTitle = document.querySelector("#forecast");
       forecastTitle.textContent = "";
       forecastTitle.textContent = "5-Day Forecast";
+      // /////////////////////////////////////////////////////////////////PART 4: FORECAST WEATHER DATA
+      var fiveDayForecast = document.querySelector("#fiveDayContainer");
+      fiveDayForecast.innerHTML = "";
+      for (let i = 0; i < data.list.length; i++) {
+        // 01. using moment to get the time
+        var dayData = data.list[i];
+        var dayTimeUTC = dayData.dt;
+        var timeZoneOffset = data.city.timezone;
+        var timeZoneOffsetHours = timeZoneOffset / 60 / 60;
+        var thisMoment = moment
+          .unix(dayTimeUTC)
+          .utc()
+          .utcOffset(timeZoneOffsetHours);
+        console.log(thisMoment.format("HH:mm:ss"));
+        // 02. only display noon forecast
+        // -----------------------------------------------------------------data: forecast data
+        if (
+          thisMoment.format("HH:mm:ss") === "11:00:00" ||
+          thisMoment.format("HH:mm:ss") === "12:00:00" ||
+          thisMoment.format("HH:mm:ss") === "13:00:00"
+        ) {
+          // -------------------------------------------------list data: 1.time 2.temp 3.icon 4.wind 5.humidity
+          fiveDayForecast.innerHTML += `
+          <div class="card m-2 p0">
+              <ul class="list-unstyled p-3">
+                  <li>${thisMoment.format("MM/DD/YY")}</li>
+                  <li class="weather-icon"><img src="https://openweathermap.org/img/wn/${
+                    dayData.weather[0].icon
+                  }@2x.png"></li>
+                  <li>Temp: ${dayData.main.temp}&#8457;</li>
+                  <br>
+                  <li>Temp: ${dayData.wind.speed}MHP;</li>
+                  <br>
+                  <li>Humidity: ${dayData.main.humidity}%</li>
+              </ul>
+          </div>`;
+        }
+      }
     });
 };
 
