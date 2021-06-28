@@ -1,7 +1,7 @@
 // ------------------------------------ESTABLISHING VARIABLES-----------------------------------
 var cityName = document.querySelector("#searchedCity");
 var apiKey = "c8050763e934a3e49035af066c6fde69";
-var currentCity = "";
+var city = "";
 var lastCity = "";
 
 // ------------------------------------------FUNCTION I: CURRENT WEATHER API-------------------------------------
@@ -164,4 +164,14 @@ document.getElementById("searchBtn").onclick = function (event) {
   apiForecastWeather();
   saveCity();
   renderCity();
+};
+// /////////////////////////////////////////////////////////////////run the history button
+document.getElementById("cityHistoryContainer").onclick = function (event) {
+  event.preventDefault();
+
+  $("#city").val(event.target.textContent);
+  city = $("#city").val();
+  //re-run the weather api
+  apiCurrentWeather(event);
+  apiForecastWeather(event);
 };
