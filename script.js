@@ -1,8 +1,10 @@
 // ------------------------------------ESTABLISHING VARIABLES-----------------------------------
 var cityName = document.querySelector("#searchedCity");
 var apiKey = "c8050763e934a3e49035af066c6fde69";
+var currentCity = "";
+var lastCity = "";
 
-// ------------------------------------------CURRENT WEATHER API-------------------------------------
+// ------------------------------------------FUNCTION I: CURRENT WEATHER API-------------------------------------
 // When search button is clicked, read the city name and get the weather response
 var apiCurrentWeather = function (event) {
   // event.preventDefault();
@@ -14,7 +16,7 @@ var apiCurrentWeather = function (event) {
       return response.json();
     })
     .then(function (response) {
-      console.log("currentweather", response);
+      // console.log("currentweather", response);
       // When search button is clicked, the weather data is displayed
       // /////////////////////////////////////////////////////////////////PART 1: CITY NAME
       // -----------------------------------------------------------------data: cityName
@@ -58,7 +60,7 @@ var apiCurrentWeather = function (event) {
           return response.json();
         })
         .then(function (uvi) {
-          console.log("uvi", uvi);
+          // console.log("uvi", uvi);
           currentUvi = document.createElement("span");
           currentUvi.textContent = "UV Index: " + uvi.value;
           currentWeather.append(currentUvi);
@@ -66,7 +68,7 @@ var apiCurrentWeather = function (event) {
     });
 };
 
-// ------------------------------------------FORECAST WEATHER API-------------------------------------
+// ------------------------------------------FUNCTION II: FORECAST WEATHER API-------------------------------------
 // When search button is clicked, read the city name and get the weather response
 var apiForecastWeather = function (event) {
   // event.preventDefault();
@@ -78,7 +80,7 @@ var apiForecastWeather = function (event) {
       return response.json();
     })
     .then(function (data) {
-      console.log("forecast", data);
+      // console.log("forecast", data);
       // /////////////////////////////////////////////////////////////////PART 3: FORECAST WEATHER TITLE
       var forecastTitle = document.querySelector("#forecast");
       forecastTitle.textContent = "";
@@ -96,7 +98,7 @@ var apiForecastWeather = function (event) {
           .unix(dayTimeUTC)
           .utc()
           .utcOffset(timeZoneOffsetHours);
-        console.log(thisMoment.format("HH:mm:ss"));
+        // console.log("five day time", thisMoment.format("HH:mm:ss"));
         // 02. only display noon forecast
         // -----------------------------------------------------------------data: forecast data
         if (
@@ -124,17 +126,42 @@ var apiForecastWeather = function (event) {
     });
 };
 
+// ------------------------------------------FUNCTION III: LOCAL STORAGE: SAVE & GET------------------------------------
+// /////////////////////////////////////////////////////////////////save the city to localStorage
+var saveCity = function (newCity) {
+  let cityExists = false;
+  var city = document.querySelector("#city").value;
+  // Check if City exists in local storage
+  for (let i = 0; i < localStorage.length; i++) {
+    if (localStorage["cities" + i] === city) {
+      cityExists = true;
+      break;
+    }
+  }
+  // Save to localStorage if city is new
+  if (cityExists === false) {
+    localStorage.setItem("cities" + localStorage.length, city);
+  }
+};
+// /////////////////////////////////////////////////////////////////get the city to localStorage
+var renderCity = function () {
+  var cityHistoryContainer = document.querySelector("#cityHistoryContainer");
+  cityHistoryContainer.textContent = "";
+  // getItem from local storage and create new buttons
+  for (let i = 0; i < localStorage.length; i++) {
+    let cityHistory = localStorage.getItem("cities" + i);
+    console.log(cityHistory);
+    let cityEl;
+    cityEl = `<button type="button" class="list-group-item list-group-item-action active">${cityHistory}</button></li><br>`;
+    // Append city history to page
+    $("#cityHistoryContainer").prepend(cityEl);
+  }
+};
+// ------------------------------------------RUN ALL THE FUNCTIONS BY CLICKING-----------------------
 document.getElementById("searchBtn").onclick = function (event) {
   event.preventDefault();
   apiCurrentWeather();
   apiForecastWeather();
+  saveCity();
+  renderCity();
 };
-
-// When search button is clicked, city name is stored in the local storage
-// var saveSearch = function (event) {
-//   event.preventDefault();
-//   var city = document.querySelector("#city").value;
-//   localStorage.setItem("city", city);
-// };
-
-// document.getElementById("searchBtn").onclick = saveSearch;
