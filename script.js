@@ -10,7 +10,7 @@ var apiCurrentWeather = function (event) {
   // event.preventDefault();
   var city = document.querySelector("#city").value;
   fetch(
-    `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`
+    `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`
   )
     .then(function (response) {
       return response.json();
