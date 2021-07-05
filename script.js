@@ -16,7 +16,7 @@ var apiCurrentWeather = function (event) {
       return response.json();
     })
     .then(function (response) {
-      // console.log("currentweather", response);
+      console.log("currentweather", response);
       // When search button is clicked, the weather data is displayed
       // /////////////////////////////////////////////////////////////////PART 1: CITY NAME
       // -----------------------------------------------------------------data: cityName
@@ -40,7 +40,9 @@ var apiCurrentWeather = function (event) {
       // -----------------------------------------------------------------data: temperature
       var currentTemperature = document.createElement("span");
       currentTemperature.textContent =
-        "Temperature: " + response.main.temp + " °F";
+        "Temperature: " +
+        Math.floor((response.main.temp - 273.15) * 1.8 + 32) +
+        " °F";
       currentWeather.append(currentTemperature);
       // -----------------------------------------------------------------data: humidity
       var currentHumidity = document.createElement("span");
@@ -80,7 +82,7 @@ var apiForecastWeather = function (event) {
       return response.json();
     })
     .then(function (data) {
-      // console.log("forecast", data);
+      console.log("forecast", data);
       // /////////////////////////////////////////////////////////////////PART 3: FORECAST WEATHER TITLE
       var forecastTitle = document.querySelector("#forecast");
       forecastTitle.textContent = "";
